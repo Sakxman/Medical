@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mediweb – Expert Healthcare, Personalized for You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #615EFC;
+      --primary-d: #4c49d4;
+      --dark:      #111032;
+      --mid:       #6c6f93;
+      --light-bg:  #F1F1FF;
+      --white:     #ffffff;
+      --border:    #d0ceff;
+      --font-body: 'DM Sans', sans-serif;
+      --font-head: 'Playfair Display', serif;
+      --nav-h:     72px;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(97,94,252,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { text-decoration: none; color: inherit; }
+    ul  { list-style: none; }
+    button { cursor: pointer; font-family: var(--font-body); }
+
+    /* ─── SCROLL ANIMATIONS ────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left  { opacity:0; transform:translateX(-36px); transition:opacity .65s ease,transform .65s ease; }
+    .reveal-right { opacity:0; transform:translateX( 36px); transition:opacity .65s ease,transform .65s ease; }
+    .reveal-left.visible,
+    .reveal-right.visible { opacity:1; transform:translateX(0); }
+
+    /* stagger children */
+    .stagger > * { opacity:0; transform:translateY(28px); transition:opacity .55s ease,transform .55s ease; }
+    .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:.05s; }
+    .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:.15s; }
+    .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:.25s; }
+    .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:.35s; }
+
+    /* ─── UTILITY ──────────────────────────────────────────────── */
+    .tag-pill {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      background: #eaeaff;
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 999px;
+      letter-spacing: .3px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: background .2s, transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { background: var(--primary-d); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(97,94,252,.35); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: background .2s, color .2s;
+    }
+    .btn-outline:hover { background: var(--primary); color: var(--white); }
+
+    /* ─── NAVBAR ───────────────────────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--white);
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 999;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 40px; }
+
+    .logo { height: 38px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-item {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--dark);
+      cursor: pointer;
+      position: relative;
+      padding: 4px 0;
+      transition: color .2s;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary);
+      transition: width .25s;
+      border-radius: 2px;
+    }
+    .nav-item:hover { color: var(--primary); }
+    .nav-item:hover::after { width: 100%; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 0 14px;
+      height: 40px;
+      gap: 8px;
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--primary); }
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+      width: 160px;
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: transparent;
+    }
+    .search-box svg { width:16px; height:16px; stroke:var(--mid); flex-shrink:0; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      z-index: 998;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 16px; font-weight: 500; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+
+    /* ─── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      margin-top: var(--nav-h);
+      min-height: calc(100vh - var(--nav-h));
+      background: url('./images/02.jpeg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(17,16,50,.72) 0%, rgba(17,16,50,.2) 70%, transparent 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 6vw;
+      max-width: 640px;
+    }
+    .hero-content .tag-pill { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.4); color: #fff; }
+    .hero-content h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin: 18px 0 20px;
+    }
+    .hero-content p {
+      font-size: 16px;
+      color: rgba(255,255,255,.85);
+      line-height: 1.7;
+      max-width: 460px;
+      margin-bottom: 32px;
+    }
+    .hero-content .btn-primary { font-size: 16px; padding: 15px 32px; }
+
+    /* animate hero text in */
+    .hero-content .tag-pill  { animation: fadeUp .7s .1s both; }
+    .hero-content h1         { animation: fadeUp .7s .25s both; }
+    .hero-content p          { animation: fadeUp .7s .4s both; }
+    .hero-content .btn-primary { animation: fadeUp .7s .55s both; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ─── QUICK-ACCESS STRIPS ──────────────────────────────────── */
+    .quick-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .quick-item {
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 28px;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .quick-item:hover { background: var(--light-bg); }
+    .quick-item img { width: 42px; height: 42px; object-fit: contain; flex-shrink: 0; }
+    .quick-item p { font-size: 15px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+
+    /* ─── ABOUT / SERVICES DOWN ────────────────────────────────── */
+    .about-section {
+      padding: 100px 6vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: visible;
+    }
+    .about-img-wrap > img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+    .stat-card {
+      position: absolute;
+      bottom: -30px;
+      left: 32px;
+      background: var(--primary);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      color: var(--white);
+      box-shadow: var(--shadow);
+      min-width: 180px;
+    }
+    .stat-card h3 { font-size: 2rem; font-weight: 700; }
+    .stat-card p  { font-size: 14px; opacity: .85; margin-top: 4px; }
+    .stat-card small { font-size: 12px; opacity: .7; display: block; margin-top: 6px; }
+
+    .about-text .tag-pill { margin-bottom: 18px; }
+    .about-text h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--dark);
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
+    .about-text p.desc {
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 28px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 32px;
+      margin-bottom: 36px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+    .feature-item::before {
+      content: '✓';
+      width: 22px; height: 22px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .about-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .trustpilot { display: flex; align-items: center; gap: 10px; }
+    .trustpilot img { height: 60px; }
+    .trustpilot-text { font-size: 13px; color: var(--mid); line-height: 1.5; }
+    .trustpilot-text strong { color: var(--dark); }
+
+    /* ─── DEPARTMENTS ──────────────────────────────────────────── */
+    .departments {
+      background: var(--light-bg);
+      padding: 100px 6vw;
+    }
+    .dept-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .dept-header h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      color: var(--dark);
+      line-height: 1.2;
+    }
+    .dept-header-right p { font-size: 15px; color: var(--mid); max-width: 320px; margin-bottom: 16px; }
+
+    .dept-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .dept-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .dept-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--primary); }
+    .dept-card img { width: 52px; height: 52px; object-fit: contain; margin-bottom: 20px; }
+    .dept-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+    .dept-card p  { font-size: 14px; color: var(--mid); line-height: 1.65; margin-bottom: 20px; }
+
+    /* ─── SPLIT BANNER ─────────────────────────────────────────── */
+    .split-banner {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      height: 560px;
+    }
+    .split-left {
+      background: url('./images/05.jpeg') center/cover no-repeat;
+      position: relative;
+    }
+    .split-left::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(17,16,50,.55), transparent);
+    }
+    .split-left-content {
+      position: relative;
+      z-index: 1;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      color: var(--white);
+    }
+    .split-left-content h2 { font-family: var(--font-head); font-size: clamp(1.6rem,3vw,2.4rem); line-height:1.2; margin-bottom:12px; }
+    .split-left-content p  { font-size:15px; opacity:.85; line-height:1.65; max-width:420px; margin-bottom:28px; }
+
+    .split-right {
+      background: url('./images/02 (2).jpeg') center/cover no-repeat;
+      position: relative;
+    }
+    .split-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(17,16,50,.55);
+    }
+    .split-right-content {
+      position: relative; z-index:1;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      height:100%;
+      padding:48px;
+      color: var(--white);
+    }
+    .split-right-content h3 { font-family:var(--font-head); font-size:clamp(1.4rem,2.5vw,2rem); line-height:1.25; margin-bottom:12px; }
+    .split-right-content p  { font-size:14px; opacity:.8; line-height:1.65; margin-bottom:24px; }
+    .btn-outline-white {
+      display:inline-flex; align-items:center; gap:8px;
+      border:1.5px solid rgba(255,255,255,.7); color:var(--white);
+      background:transparent; border-radius:999px;
+      padding:11px 22px; font-size:14px; font-weight:600;
+      transition: background .2s;
+      cursor:pointer;
+      font-family:var(--font-body);
+    }
+    .btn-outline-white:hover { background:rgba(255,255,255,.15); }
+
+    /* ─── DOCTORS ──────────────────────────────────────────────── */
+    .doctors-section {
+      padding: 100px 6vw;
+      background: var(--light-bg);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 52px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .section-header h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--dark);
+      line-height: 1.25;
+    }
+    .section-header p { font-size: 15px; color: var(--mid); max-width: 380px; line-height: 1.65; }
+
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .doctor-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .doctor-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .doctor-card img { width:100%; height:220px; object-fit:cover; }
+    .doctor-info { padding: 18px 16px; text-align: center; }
+    .doctor-info h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .doctor-info .specialty { font-size: 13px; color: var(--mid); margin-bottom: 12px; }
+    .socials { display:flex; justify-content:center; gap:10px; }
+    .socials img { width:20px; height:20px; object-fit:contain; opacity:.7; transition:opacity .2s; }
+    .socials img:hover { opacity:1; }
+
+    /* ─── AWARDS ───────────────────────────────────────────────── */
+    .awards-section {
+      padding: 80px 6vw;
+      background: var(--white);
+    }
+    .awards-section .section-intro { text-align:center; max-width:600px; margin:0 auto 52px; }
+    .awards-section .section-intro h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem,3vw,2.4rem);
+      margin-bottom: 12px;
+    }
+    .awards-section .section-intro p { font-size:15px; color:var(--mid); line-height:1.65; }
+    .award-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      border-bottom: 1px solid #ebebf5;
+    }
+    .award-row:first-of-type { border-top: 1px solid #ebebf5; }
+    .award-row h3 { font-size: clamp(1rem,1.5vw,1.25rem); color: var(--dark); line-height: 1.35; }
+    .award-row img { height: 44px; object-fit: contain; flex-shrink:0; }
+
+    /* ─── HOW IT WORKS ─────────────────────────────────────────── */
+    .how-section {
+      background: var(--light-bg);
+      padding: 100px 6vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .how-left h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem,3vw,2.5rem);
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+    .how-left > img { width:100%; border-radius: var(--radius); object-fit: cover; height: 360px; }
+
+    .how-right p.sub { font-size:15px; color:var(--mid); line-height:1.7; margin-bottom:32px; }
+    .step-box {
+      display:flex; align-items:center; gap:20px;
+      background:var(--white);
+      border:1.5px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px 22px;
+      margin-bottom:12px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .step-box:hover { border-color:var(--primary); box-shadow:var(--shadow); }
+    .step-icon { width:52px; height:52px; flex-shrink:0; }
+    .step-icon img { width:100%; height:100%; object-fit:contain; }
+    .step-text h4 { font-size:1rem; font-weight:700; margin-bottom:4px; }
+    .step-text span { font-size:13.5px; color:var(--mid); line-height:1.55; }
+
+    /* ─── TESTIMONIALS ─────────────────────────────────────────── */
+    .testimonials-section {
+      padding: 100px 6vw;
+      text-align: center;
+    }
+    .testimonials-section .tag-pill { margin-bottom: 12px; }
+    .testimonials-section h2 {
+      font-family:var(--font-head);
+      font-size:clamp(1.8rem,3vw,2.4rem);
+      margin-bottom:48px;
+    }
+    .testi-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+      text-align:left;
+    }
+    .testi-card {
+      background:var(--light-bg);
+      border-radius:var(--radius);
+      padding:32px 28px;
+      position:relative;
+      transition:transform .25s, box-shadow .25s;
+    }
+    .testi-card:hover { transform:translateY(-4px); box-shadow:var(--shadow); }
+    .quote-icon { font-size:36px; color:var(--primary); line-height:1; margin-bottom:14px; }
+    .testi-card p { font-size:14.5px; color:#444; line-height:1.7; margin-bottom:20px; }
+    .testi-profile { display:flex; align-items:center; gap:12px; }
+    .testi-profile img { width:44px; height:44px; border-radius:50%; object-fit:cover; }
+    .testi-profile h4 { font-size:14px; font-weight:700; }
+    .stars { color:#f5a623; font-size:13px; margin-top:3px; }
+
+    /* ─── APPOINTMENT CTA ──────────────────────────────────────── */
+    .cta-section {
+      background: var(--primary);
+      padding: 80px 6vw;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-family:var(--font-head);
+      font-size:clamp(2rem,4vw,3rem);
+      color:var(--white);
+      margin-bottom:28px;
+      line-height:1.2;
+    }
+    .cta-section p { font-size:16px; color:rgba(255,255,255,.8); max-width:520px; margin:0 auto 36px; line-height:1.65; }
+    .btn-white {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--white); color:var(--primary);
+      border:none; border-radius:999px;
+      padding:15px 36px; font-size:16px; font-weight:700;
+      cursor:pointer; font-family:var(--font-body);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.15); }
+
+    /* ─── BLOG ─────────────────────────────────────────────────── */
+    .blog-section {
+      padding: 100px 6vw;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:24px;
+      margin-top: 48px;
+    }
+    .blog-card {
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:0 2px 16px rgba(0,0,0,.07);
+      transition:transform .25s, box-shadow .25s;
+    }
+    .blog-card:hover { transform:translateY(-5px); box-shadow:var(--shadow); }
+    .blog-card img { width:100%; height:200px; object-fit:cover; }
+    .blog-body { padding:20px 18px; }
+    .blog-body small { font-size:12px; color:var(--mid); display:block; margin-bottom:8px; }
+    .blog-body h4 { font-size:1rem; font-weight:700; color:var(--dark); line-height:1.4; margin-bottom:14px; }
+    .blog-body .btn-outline { padding:9px 18px; font-size:13px; }
+
+    /* ─── BOOKING FORM ─────────────────────────────────────────── */
+    .booking-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    .booking-form-side {
+      background: var(--primary);
+      padding: 72px 6vw;
+      display:flex; align-items:center;
+    }
+    .booking-form-inner { width:100%; max-width:460px; color:var(--white); }
+    .booking-form-inner .tag-pill { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.4); color:#fff; margin-bottom:18px; }
+    .booking-form-inner h2 {
+      font-family:var(--font-head);
+      font-size:clamp(1.6rem,2.5vw,2.2rem);
+      line-height:1.25; margin-bottom:28px;
+    }
+    .input-row { display:flex; gap:12px; margin-bottom:14px; }
+    .form-group { margin-bottom:14px; }
+    .form-group input,
+    .input-row input {
+      width:100%; padding:13px 18px;
+      border:1.5px solid rgba(255,255,255,.5);
+      border-radius:999px;
+      background:rgba(255,255,255,.1);
+      color:var(--white);
+      font-size:14px;
+      font-family:var(--font-body);
+      outline:none;
+      transition:border-color .2s;
+    }
+    .form-group input::placeholder,
+    .input-row input::placeholder { color:rgba(255,255,255,.7); }
+    .form-group input:focus,
+    .input-row input:focus { border-color:var(--white); }
+
+    .booking-img-side {
+      background:url('./images/01 (1).webp') center/cover no-repeat;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────────── */
+    .footer {
+      background: var(--dark);
+      padding: 72px 6vw 0;
+      color: #ccc;
+    }
+    .footer-top {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding-bottom:40px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      flex-wrap:wrap;
+      gap:20px;
+    }
+    .footer-top .logo { filter:brightness(0) invert(1); }
+    .subscribe-row {
+      display:flex;
+      border:1.5px solid rgba(255,255,255,.25);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .subscribe-row input {
+      flex:1; padding:11px 18px;
+      background:transparent; color:var(--white);
+      border:none; outline:none; font-family:var(--font-body); font-size:14px;
+      min-width:0;
+    }
+    .subscribe-row input::placeholder { color:rgba(255,255,255,.5); }
+    .subscribe-row button {
+      padding:11px 22px;
+      background:var(--primary); color:var(--white);
+      border:none; cursor:pointer;
+      font-size:14px; font-weight:600;
+      font-family:var(--font-body);
+      transition:background .2s;
+    }
+    .subscribe-row button:hover { background:var(--primary-d); }
+
+    .footer-cols {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:40px;
+      padding: 52px 0;
+    }
+    .footer-col h4 { color:var(--white); font-size:15px; font-weight:700; margin-bottom:18px; }
+    .footer-col p,
+    .footer-col li { font-size:13.5px; color:#aaa; margin-bottom:10px; line-height:1.55; }
+    .footer-col li a:hover { color:var(--white); }
+
+    .footer-bottom {
+      background:#0e0d2d;
+      text-align:center;
+      padding:18px;
+      font-size:12px;
+      color:#666;
+    }
+
+    /* ─── MEDIA QUERIES ────────────────────────────────────────── */
+
+    @media (max-width: 1100px) {
+      .doctors-grid { grid-template-columns:repeat(2,1fr); }
+      .footer-cols  { grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .quick-strip   { grid-template-columns:repeat(2,1fr); }
+      .about-section { grid-template-columns:1fr; gap:40px; }
+      .about-img-wrap > img { height:360px; }
+      .split-banner  { grid-template-columns:1fr; height:auto; }
+      .split-left, .split-right { height:380px; }
+      .how-section   { grid-template-columns:1fr; gap:40px; }
+      .testi-grid    { grid-template-columns:1fr; }
+      .booking-section { grid-template-columns:1fr; }
+      .booking-img-side { display:none; }
+      .dept-cards    { grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media (max-width: 768px) {
+      :root { --nav-h: 64px; }
+
+      .nav-links, .search-box { display:none; }
+      .hamburger { display:flex; }
+      .header-right .btn-primary { padding:10px 18px; font-size:13px; }
+
+      .hero-content h1 { font-size:2rem; }
+      .hero-content p  { font-size:14px; }
+
+      .about-section { padding:64px 5vw; }
+      .stat-card { position:static; margin-top:16px; display:inline-block; }
+
+      .departments  { padding:64px 5vw; }
+      .dept-cards   { grid-template-columns:1fr; }
+      .dept-header  { flex-direction:column; align-items:flex-start; }
+
+      .section-header { flex-direction:column; align-items:flex-start; }
+
+      .doctors-section { padding:64px 5vw; }
+      .doctors-grid { grid-template-columns:repeat(2,1fr); }
+
+      .how-section { padding:64px 5vw; }
+
+      .testimonials-section { padding:64px 5vw; }
+
+      .blog-grid { grid-template-columns:1fr; }
+      .blog-section { padding:64px 5vw; }
+
+      .footer-cols { grid-template-columns:1fr 1fr; gap:28px; }
+      .footer-top  { flex-direction:column; align-items:flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      .quick-strip { grid-template-columns:1fr; }
+      .features-grid { grid-template-columns:1fr; }
+      .doctors-grid { grid-template-columns:1fr; }
+      .footer-cols  { grid-template-columns:1fr; }
+      .input-row    { flex-direction:column; }
+      .award-row img { height:32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <img src="./images/medlogo.png" alt="Mediweb Logo" class="logo" />
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-item" href="#">Home</a>
+        <a class="nav-item" href="#">About</a>
+        <a class="nav-item" href="#">Services</a>
+        <a class="nav-item" href="#">Our Doctors</a>
+        <a class="nav-item" href="#">Blog</a>
+        <a class="nav-item" href="#">Contact</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" placeholder="Search..." aria-label="Search">
+      </div>
+      <a href="#booking" class="btn-primary">Book Appointment</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Our Doctors</a>
+    <a href="#">Blog</a>
+    <a href="#">Contact</a>
+    <a href="#booking" class="btn-primary" style="text-align:center;margin-top:8px;">Book Appointment</a>
+  </nav>
+
+  <!-- ── HERO ──────────────────────────────────────────────────── -->
+  <section class="hero" aria-label="Hero banner">
+    <div class="hero-content">
+      <span class="tag-pill">Advanced Diagnostic Technology</span>
+      <h1>Expert Care,<br>Personalized<br>for You</h1>
+      <p>Our team of specialists is dedicated to providing expert medical care tailored to your individual needs, with a focus on personalized treatment plans and lasting results.</p>
+      <a href="#booking" class="btn-primary">Book an Appointment ›</a>
+    </div>
+  </section>
+
+  <!-- ── QUICK-ACCESS STRIP ─────────────────────────────────────── -->
+  <div class="quick-strip stagger" role="list">
+    <div class="quick-item" role="listitem">
+      <img src="./images/01.svg" alt="">
+      <p>Request<br>Appointment</p>
+    </div>
+    <div class="quick-item" role="listitem">
+      <img src="./images/02.svg" alt="">
+      <p>Find<br>a Doctor</p>
+    </div>
+    <div class="quick-item" role="listitem">
+      <img src="./images/03.svg" alt="">
+      <p>Emergency<br>Helpline</p>
+    </div>
+    <div class="quick-item" role="listitem">
+      <img src="./images/04.svg" alt="">
+      <p>24/7<br>Patient Support</p>
+    </div>
+  </div>
+
+  <!-- ── ABOUT / WHO WE ARE ─────────────────────────────────────── -->
+  <section class="about-section" aria-labelledby="about-heading">
+    <div class="about-img-wrap reveal-left">
+      <img src="./images/03.jpeg" alt="Our healthcare team at work" />
+      <div class="stat-card">
+        <h3>120K+</h3>
+        <p>Patients Treated</p>
+        <small>12+ Years of Excellence</small>
+      </div>
+    </div>
+    <div class="about-text reveal-right">
+      <span class="tag-pill">Who We Are</span>
+      <h2 id="about-heading">Dedicated to Your<br>Health &amp; Wellness</h2>
+      <p class="desc">
+        At Mediweb, our mission is to deliver exceptional, patient-centered healthcare. From routine check-ups to complex treatments, our multidisciplinary team combines clinical expertise with genuine compassion to help you live healthier, longer.
+      </p>
+      <div class="features-grid">
+        <div class="feature-item">Comprehensive Care Services</div>
+        <div class="feature-item">Nutrition Counseling</div>
+        <div class="feature-item">Highly Skilled Medical Team</div>
+        <div class="feature-item">24/7 Virtual Care</div>
+        <div class="feature-item">Patient-Centered Approach</div>
+        <div class="feature-item">Experienced Specialists</div>
+      </div>
+      <div class="about-actions">
+        <a href="#" class="btn-primary">About Us ›</a>
+        <div class="trustpilot">
+          <img src="./images/trust.png" alt="Trustpilot" />
+          <div class="trustpilot-text">
+            TrustScore <strong>4.8</strong><br>
+            Based on <strong>2,000+ reviews</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DEPARTMENTS ────────────────────────────────────────────── -->
+  <section class="departments" aria-labelledby="dept-heading">
+    <div class="dept-header">
+      <div>
+        <span class="tag-pill">Our Specialties</span>
+        <h2 id="dept-heading" style="margin-top:14px;">Our Range of<br>Healthcare Departments</h2>
+      </div>
+      <div class="dept-header-right reveal">
+        <p>Our experienced team of healthcare professionals offers personalized care across a wide range of medical specialties.</p>
+        <a href="#" class="btn-outline">View All Departments</a>
+      </div>
+    </div>
+    <div class="dept-cards stagger">
+      <div class="dept-card">
+        <img src="./images/09.svg" alt="Cardiology icon">
+        <h3>Cardiology</h3>
+        <p>Expert diagnosis and treatment of heart conditions, hypertension, arrhythmias, and cardiovascular disease using the latest technology.</p>
+        <a href="#" class="btn-outline">Learn More ›</a>
+      </div>
+      <div class="dept-card">
+        <img src="./images/10.svg" alt="Dental Care icon">
+        <h3>Dental Care</h3>
+        <p>Complete oral health services from preventive cleanings and cosmetic procedures to complex restorations and orthodontics.</p>
+        <a href="#" class="btn-outline">Learn More ›</a>
+      </div>
+      <div class="dept-card">
+        <img src="./images/11.svg" alt="Mental Health icon">
+        <h3>Mental Health</h3>
+        <p>Compassionate support for anxiety, depression, and a wide range of behavioral health conditions through therapy and psychiatric care.</p>
+        <a href="#" class="btn-outline">Learn More ›</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SPLIT BANNER ───────────────────────────────────────────── -->
+  <section class="split-banner" aria-label="Services showcase">
+    <div class="split-left">
+      <div class="split-left-content reveal-left">
+        <h2>Hematology &amp;<br>Blood Treatment</h2>
+        <p>Our specialized hematology unit offers advanced diagnostics and treatment for blood disorders, anemia, clotting conditions, and more — with dedicated care tailored to each patient.</p>
+        <button class="btn-outline-white">View Details ›</button>
+      </div>
+    </div>
+    <div class="split-right">
+      <div class="split-right-content reveal-right">
+        <h3>State-of-the-Art<br>Surgical Suites</h3>
+        <p>Our modern operating theatres are equipped with the latest robotic-assisted and minimally invasive surgical technology for faster recovery and better outcomes.</p>
+        <button class="btn-outline-white">Explore Services ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DOCTORS ────────────────────────────────────────────────── -->
+  <section class="doctors-section" aria-labelledby="doctors-heading">
+    <div class="section-header">
+      <div>
+        <span class="tag-pill">Our Team</span>
+        <h2 id="doctors-heading" style="margin-top:14px;">Meet Our Expert<br>Medical Team</h2>
+      </div>
+      <p>Our dedicated doctors bring deep expertise, years of clinical experience, and a genuine commitment to your well-being.</p>
+    </div>
+    <div class="doctors-grid stagger">
+      <div class="doctor-card">
+        <img src="./images/radoc.jpg" alt="Dr. Rachel Evans">
+        <div class="doctor-info">
+          <h4>Dr. Rachel Evans</h4>
+          <p class="specialty">MBBS, MD — Oncologist</p>
+          <div class="socials">
+            <img src="./images/cleanfb.jpg" alt="Facebook">
+            <img src="./images/newlink.webp" alt="LinkedIn">
+            <img src="./images/newtwitter.png" alt="Twitter">
+          </div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="./images/gundo.jpg" alt="Dr. Emily Carter">
+        <div class="doctor-info">
+          <h4>Dr. Emily Carter</h4>
+          <p class="specialty">MBBS, MD — Cardiologist</p>
+          <div class="socials">
+            <img src="./images/cleanfb.jpg" alt="Facebook">
+            <img src="./images/newlink.webp" alt="LinkedIn">
+            <img src="./images/newtwitter.png" alt="Twitter">
+          </div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="./images/03 (1).jpeg" alt="Dr. Lisa Morgan">
+        <div class="doctor-info">
+          <h4>Dr. Lisa Morgan</h4>
+          <p class="specialty">MBBS, MD — Neurologist</p>
+          <div class="socials">
+            <img src="./images/cleanfb.jpg" alt="Facebook">
+            <img src="./images/newlink.webp" alt="LinkedIn">
+            <img src="./images/newtwitter.png" alt="Twitter">
+          </div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="./images/04.jpeg" alt="Dr. Jessica Lee">
+        <div class="doctor-info">
+          <h4>Dr. Jessica Lee</h4>
+          <p class="specialty">MBBS, MD — Orthopedic Surgeon</p>
+          <div class="socials">
+            <img src="./images/cleanfb.jpg" alt="Facebook">
+            <img src="./images/newlink.webp" alt="LinkedIn">
+            <img src="./images/newtwitter.png" alt="Twitter">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AWARDS ─────────────────────────────────────────────────── -->
+  <section class="awards-section" aria-labelledby="awards-heading">
+    <div class="section-intro reveal">
+      <span class="tag-pill">Recognition</span>
+      <h2 id="awards-heading" style="margin-top:14px;">Our Honors &amp; Awards</h2>
+      <p>Recognized by leading medical institutions for our outstanding contributions to patient care, innovation, and clinical excellence.</p>
+    </div>
+    <div class="award-row reveal">
+      <h3>Excellence in Healthcare Award</h3>
+      <img src="./images/emc.png" alt="European Medical Center">
+    </div>
+    <div class="award-row reveal">
+      <h3>Outstanding Physician Award</h3>
+      <img src="./images/02.png" alt="Cincinnati Children's Hospital">
+    </div>
+    <div class="award-row reveal">
+      <h3>Innovative Medical Practice Award</h3>
+      <img src="./images/03.png" alt="KU Medical Center">
+    </div>
+    <div class="award-row reveal">
+      <h3>Patient Care Excellence Award</h3>
+      <img src="./images/innndex.png" alt="Index Media">
+    </div>
+    <div class="award-row reveal">
+      <h3>Lifetime Achievement in Medicine Award</h3>
+      <img src="./images/05.png" alt="Children's Medical Center">
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ───────────────────────────────────────────── -->
+  <section class="how-section" aria-labelledby="how-heading">
+    <div class="how-left reveal-left">
+      <span class="tag-pill">Our Process</span>
+      <h2 id="how-heading" style="margin-top:14px;">Your Health Journey<br>Made Simple</h2>
+      <img src="./images/03 (2).jpeg" alt="Healthcare team collaborating" style="margin-top:24px;">
+    </div>
+    <div class="how-right reveal-right">
+      <p class="sub">From your first appointment to ongoing care, our streamlined process ensures a smooth, stress-free experience at every step.</p>
+      <div class="step-box">
+        <div class="step-icon"><img src="./images/01 (1).svg" alt=""></div>
+        <div class="step-text">
+          <h4>Patient-Centered Care</h4>
+          <span>We put your well-being first, tailoring every treatment plan to your unique health goals and medical history.</span>
+        </div>
+      </div>
+      <div class="step-box">
+        <div class="step-icon"><img src="./images/02 (1).svg" alt=""></div>
+        <div class="step-text">
+          <h4>Emergency &amp; Urgent Support</h4>
+          <span>Our emergency response team is on standby around the clock to provide rapid, life-saving intervention whenever you need it.</span>
+        </div>
+      </div>
+      <div class="step-box">
+        <div class="step-icon"><img src="./images/03 (1).svg" alt=""></div>
+        <div class="step-text">
+          <h4>Specialist Expertise</h4>
+          <span>Backed by decades of combined clinical experience, our specialists apply evidence-based practices to achieve the best outcomes.</span>
+        </div>
+      </div>
+      <div class="step-box">
+        <div class="step-icon"><img src="./images/04 (1).svg" alt=""></div>
+        <div class="step-text">
+          <h4>24/7 Emergency Hotline</h4>
+          <span>Reach a medical professional any time, day or night. Our dedicated helpline connects you instantly to the right care.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ───────────────────────────────────────────── -->
+  <section class="testimonials-section" aria-labelledby="testi-heading">
+    <span class="tag-pill">Patient Feedback</span>
+    <h2 id="testi-heading" style="margin-top:12px;">Words from Our Patients</h2>
+    <div class="testi-grid stagger">
+      <div class="testi-card">
+        <div class="quote-icon">"</div>
+        <p>Dr. Evans took the time to walk me through every step of my treatment plan. I felt genuinely heard, supported, and confident in my care throughout the entire process.</p>
+        <div class="testi-profile">
+          <img src="./images/01.png" alt="Arjun Patel">
+          <div>
+            <h4>Arjun Patel</h4>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="quote-icon">"</div>
+        <p>From my very first consultation, the team at Mediweb made me feel at ease. The facilities are world-class and the staff are incredibly warm and professional.</p>
+        <div class="testi-profile">
+          <img src="./images/sabit.png" alt="Sarah Mitchell">
+          <div>
+            <h4>Sarah Mitchell</h4>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="quote-icon">"</div>
+        <p>I came in anxious and left reassured. The diagnostic team was thorough and compassionate, and my recovery was smoother than I ever imagined possible.</p>
+        <div class="testi-profile">
+          <img src="./images/04.png" alt="David Okafor">
+          <div>
+            <h4>David Okafor</h4>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BANNER ─────────────────────────────────────────────── -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">Ready to Take Control<br>of Your Health?</h2>
+    <p>Schedule your consultation today and take the first step toward a healthier, happier life with the support of Mediweb's expert team.</p>
+    <a href="#booking" class="btn-white">Request an Appointment ›</a>
+  </section>
+
+  <!-- ── BLOG ──────────────────────────────────────────────────── -->
+  <section class="blog-section" aria-labelledby="blog-heading">
+    <div class="section-header">
+      <div>
+        <span class="tag-pill">Health Insights</span>
+        <h2 id="blog-heading" style="margin-top:14px;">Tips &amp; Articles<br>from Our Experts</h2>
+      </div>
+      <p>Our healthcare professionals share trusted advice, the latest medical research, and practical wellness tips to help you stay informed.</p>
+    </div>
+    <div class="blog-grid stagger">
+      <div class="blog-card">
+        <img src="./images/microscope.webp" alt="Microscope in a laboratory">
+        <div class="blog-body">
+          <small>By Dr. R. Evans &bull; July 16, 2024</small>
+          <h4>Understanding Male Infertility: Causes, Symptoms &amp; Treatment Options</h4>
+          <a href="#" class="btn-outline">Read More ›</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img src="./images/stethoscope.webp" alt="Doctor with stethoscope">
+        <div class="blog-body">
+          <small>By Dr. E. Carter &bull; August 3, 2024</small>
+          <h4>Heart Health Essentials: How to Reduce Your Cardiovascular Risk</h4>
+          <a href="#" class="btn-outline">Read More ›</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img src="./images/01.webp" alt="Pediatric check-up">
+        <div class="blog-body">
+          <small>By Dr. L. Morgan &bull; September 10, 2024</small>
+          <h4>Paediatric Milestones: What to Expect in Your Child's First 5 Years</h4>
+          <a href="#" class="btn-outline">Read More ›</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOOKING FORM ───────────────────────────────────────────── -->
+  <section class="booking-section" id="booking" aria-labelledby="booking-heading">
+    <div class="booking-form-side">
+      <div class="booking-form-inner">
+        <span class="tag-pill">Free Consultation</span>
+        <h2 id="booking-heading">Book Your Free<br>Medical Consultation</h2>
+        <div class="input-row">
+          <input type="text" placeholder="Patient Name" autocomplete="name">
+          <input type="tel" placeholder="Phone Number" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Select Department (e.g. Cardiology)">
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Preferred Doctor">
+        </div>
+        <div class="form-group">
+          <input type="date" placeholder="Preferred Date" style="color:rgba(255,255,255,.7);">
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Preferred Appointment Time">
+        </div>
+        <button class="btn-white" style="margin-top:8px;">Confirm Appointment ›</button>
+      </div>
+    </div>
+    <div class="booking-img-side" role="img" aria-label="Doctor consulting with patient"></div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer">
+      <div class="footer-top">
+        <img src="./images/medlogo.png" alt="Mediweb Logo" class="logo">
+        <div>
+          <p style="color:#aaa; font-size:13px; margin-bottom:10px;">Subscribe to our health newsletter</p>
+          <div class="subscribe-row">
+            <input type="email" placeholder="Enter your email address" aria-label="Email for newsletter">
+            <button>Subscribe</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <p>245 14th Street, Suite 42<br>Calgary, AB T2P 1K2, Canada</p>
+          <p>info@mediweb.com</p>
+          <p>+1 (554) 558-7480</p>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Mediweb</a></li>
+            <li><a href="#">Our Mission</a></li>
+            <li><a href="#">Book Appointment</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Orthopaedics</a></li>
+            <li><a href="#">Neurology</a></li>
+            <li><a href="#">Psychiatry</a></li>
+            <li><a href="#">Cardiology</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Working Hours</h4>
+          <p>Mon – Fri: 9:00 am – 5:00 pm</p>
+          <p>Saturday: 10:00 am – 6:00 pm</p>
+          <p>Sunday: Closed</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Mediweb. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+  <script>
+    /* Hamburger toggle */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    /* Close on link click */
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    /* Scroll-reveal with IntersectionObserver */
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* Sticky nav shadow enhancement */
+    window.addEventListener('scroll', () => {
+      document.querySelector('.header').style.boxShadow =
+        window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,.1)' : '0 2px 16px rgba(0,0,0,.06)';
+    });
+  </script>
+</body>
+</html>
